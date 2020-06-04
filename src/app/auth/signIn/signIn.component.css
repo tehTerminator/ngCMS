@@ -1,0 +1,7 @@
+.message .p {
+  line-height: 1em !important;
+}
+
+.prompt.label {
+  display: inline-block !important;
+}

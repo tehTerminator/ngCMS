@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background: linear-gradient(
+    -45deg,
+    #ee7752,
+    #e73c7e,
+    #23a6d5,
+    #23d5ab
+  ) !important;
+  background-size: 400% 400% !important;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.border-radius-0 {
+  border-radius: 0 !important;
+}
+
+.m-0 {
+  margin: 0px !important;
+}
+
+.mb-1 {
+  margin-bottom: 1em !important;
+}
+
+.mb-2 {
+  margin-bottom: 2em !important;
+}
+
+.border-1 {
+  border: 1px SOLID !important;
+}
+
+.border-black {
+  border-color: black !important;
+}
+
+.ng-invalid.ng-touched {
+  border: 1px solid red !important;
+}

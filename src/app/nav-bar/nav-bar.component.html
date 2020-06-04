@@ -1,3 +1,13 @@
-<div class="ui menu">
-    
+<div class="ui bottom attached stackable inverted menu mb-1">
+    <div class="ui header item">
+        <i class="bars icon" (click)="onToggle()"></i>
+        Maharaja Computers
+    </div>
+    <div class="right menu" [hidden]="!isMenuVisible()">
+        <a routerLink="home" routerLinkActive="active red" class="item">Home</a>
+        <a class="item">Blogs</a>
+        <a class="item">Contact Us</a>
+        <a class="item">About Us</a>
+        <a class="item" routerLinkActive="active red" routerLink="auth/signIn">Login</a>
+    </div>
 </div>

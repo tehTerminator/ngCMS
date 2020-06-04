@@ -1,0 +1,103 @@
+<div class="ui centered stackable grid">
+    <div class="six wide column">
+        <h3 class="ui top attached inverted header">
+            <i class="user icon"></i>
+            <div class="content">
+                Create New Account
+            </div>
+        </h3>
+        <form class="ui bottom attached form segment" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <div class="ui two stackable column grid">
+                <div class="ten wide column">
+                    <div class="ui required field">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" formControlName="username">
+                        <div *ngIf="username.errors && username.touched" class="ui basic red pointing prompt label">
+                            {{ errorMessages(username.errors, 'Username') }}
+                        </div>
+                    </div>
+
+                    <div class="required field">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" formControlName="password">
+                        <div *ngIf="password.errors && password.touched" class="ui basic red pointing prompt label">
+                            {{ errorMessages(password.errors, 'Password') }}
+                        </div>
+                    </div>
+
+                    <div class="required field">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" formControlName="fullName" maxlength="30">
+                        <div *ngIf="fullName.errors && fullName.touched" class="ui basic red pointing prompt label">
+                            {{ errorMessages(fullName.errors, 'Full Name') }}
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="dateOfBirth">Date Of Birth</label>
+                        <input type="date" name="dateOfBirth" formControlName="dateOfBirth">
+                    </div>
+                    <div class="field">
+                        <label for="location">Location</label>
+                        <input type="text" name="location" formControlName="location">
+                    </div>
+                    <div class="field">
+                        <label for="bio">Bio</label>
+                        <textarea type="text" name="bio" formControlName="bio"></textarea></div>
+
+                    <div class="field">
+                        <label for="imageUrl">Image Url</label>
+                        <input type="text" name="imageUrl" formControlName="imageUrl"
+                            placeholder="Upload Image on Right Side">
+                    </div>
+
+                </div>
+                <div class="six wide column">
+                    <div class="field mb-1">
+                        <label for="image">Profile Picture</label>
+                        <input accept=".jpg" type="file" name="uploadImage" (change)="onImageSelected()" #imageField>
+                    </div>
+
+                    <div *ngIf="imageData">
+                        <strong>Image Preview</strong>
+                        <img class="ui medium bordered rounded image mb-1" [src]="imageData" alt="">
+                        <button type="button" (click)="onUpload()" class="ui labeled icon blue fluid button">
+                            <i class="upload icon"></i>
+                            Upload Image
+                        </button>
+                    </div>
+                    <div class="ui icon info message" style="display: block !important;">
+                        <div class="content">
+                            <div class="header">
+                                Image Specifications
+                            </div>
+                            <ul>
+                                <li>Image Dimension 200 x 200</li>
+                                <li>Image Must Be Clear with visible Face.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="captcha">Captcha</label>
+                        <input type="text" name="captcha" formControlName="captchaAnswer">
+                        <div *ngIf="captchaAnswer.invalid && captchaAnswer.touched"
+                            class="ui basic red pointing prompt label">
+                            <span *ngIf="captchaAnswer.errors.required">
+                                Please Enter Captcha
+                            </span>
+                            <span *ngIf="captchaAnswer.errors.captcha && captchaAnswer.value.length > 0">
+                                Invalid Captcha Value
+                            </span>
+                        </div>
+                    </div>
+                    <div #captcha></div>
+
+                </div>
+            </div>
+            <hr>
+            <button class="ui green submit button" [disabled]="signUpForm.invalid">Save</button>
+            <button type="reset" class="ui red reset button" (onClick)="signUpForm.reset()">Reset</button>
+        </form>
+    </div>
+</div>

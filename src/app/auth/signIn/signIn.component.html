@@ -1,0 +1,69 @@
+<div class="ui centered stackable page grid">
+    <div class="five wide column">
+        <h3 class="ui inverted top attached header">
+            <i class="user icon"></i>
+            <div class="content">
+                User Login
+            </div>
+        </h3>
+        <form class="ui attached form segment" [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+            [ngClass]="isLoading ? 'loading' : ''">
+
+            <div class="required field" [ngClass]="username.invalid && username.touched ? 'error' : ''">
+                <label for="username">Username</label>
+                <div class="ui icon input">
+                    <input type="text" class="border-radius-0" formControlName="username">
+                    <i class="user icon"></i>
+                </div>
+                <div *ngIf="username.errors && username.touched">
+                    <div class="ui basic red pointing prompt label" *ngIf="username.errors.required">
+                        Please Enter Username
+                    </div>
+                    <div class="ui basic red pointing prompt label" *ngIf="username.errors.minlength">
+                        Username must Contain Atleast 6 Character
+                    </div>
+                </div>
+            </div>
+            <div class=" required field" [ngClass]="password.invalid && password.touched ? 'error': ''">
+                <label for="password">Password</label>
+                <div class="ui icon input">
+                    <input [type]="passwordFieldType" class="border-radius-0" formControlName="password">
+                    <i class="eye slash icon"></i>
+                </div>
+                <div *ngIf="password.errors && password.touched">
+                    <div class="ui basic red pointing prompt label" *ngIf="password.errors.required">
+                        Please Enter Password.</div>
+                    <div class="ui basic red pointing prompt label" *ngIf="password.errors.minlength">
+                        Password must have atleast 6 Characters.</div>
+                </div>
+            </div>
+
+            <div #canvasContainer>
+
+            </div>
+
+            <div class="ui required field" [ngClass]="captcha.invalid && captcha.touched ? 'error' : ''">
+                <label for="captcha">CAPTCHA</label>
+                <div class="ui input">
+                    <input type="text" formControlName="captcha">
+                </div>
+                <div *ngIf="captcha.errors && captcha.touched">
+                    <div class="ui basic red pointing prompt label" *ngIf="captcha.errors.required">
+                        Please Enter Captcha.</div>
+                    <div class="ui basic red pointing prompt label" *ngIf="captcha.errors.captcha">
+                        Invalid Captcha Entered.</div>
+                </div>
+
+            </div>
+
+            <div class="action">
+                <button type="submit" [disabled]="loginForm.invalid" class="ui green submit button">Submit</button>
+                <button type="reset" class="ui red button" (click)="loginForm.reset()">Reset</button>
+            </div>
+        </form>
+        <div class="ui bottom attached center aligned stacked segment">
+            Dont Have account!<br>
+            <a [routerLink]="['/auth', 'signUp']">Click Here, To Create a New Account</a>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  serverUrl: 'http://192.168.0.10/cms/api/sql.php'
+  serverUrl: 'http://192.168.0.10/cms/api/sql.php',
+  imageUpload: 'http://192.168.0.10/cms/api/uploadImage.php'
 };
 
 /*
