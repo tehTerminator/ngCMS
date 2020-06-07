@@ -1,9 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, throwError, Subject } from 'rxjs';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, throwError, Subject, EMPTY } from 'rxjs';
 import { User, Profile } from './user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { SqlRequest, SqlResponse } from '../shared/sql.interface';
+import { SqlRequest, SqlResponse } from '../shared/sql.service';
 import { tap, exhaustMap, map, take, takeUntil } from 'rxjs/operators';
 import { MINUTE, HOUR } from '../app.module';
 import { Router } from '@angular/router';
@@ -21,7 +21,9 @@ export class AuthService implements OnDestroy {
     private destroy$ = new Subject();
     private timer: any;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router) {
+        this.autoSignIn();
+    }
 
     signIn(username: string, password: string) {
         const request: SqlRequest = {
@@ -57,25 +59,33 @@ export class AuthService implements OnDestroy {
         }
 
         const expirationTime = (new Date(userData.generatedOn)).getTime() + HOUR;
-        this.user.next(new User(
-            userData.id,
-            userData.username,
-            userData.token,
-            expirationTime
-        ));
+        const currentTime = (new Date()).getTime();
 
-        localStorage.setItem('userData', JSON.stringify(userData));
+        if (expirationTime > currentTime) {
+            this.user.next(new User(
+                userData.id,
+                userData.username,
+                userData.token,
+                expirationTime
+            ));
 
-        this.timer = setTimeout(() => {
-            if (confirm('Your session is about to expire. Do you want to continue your work?')) {
-                this.refreshToken()
-                    .subscribe((res: SqlResponse) => {
-                        this.handleAuthentication(res.data[0]);
-                    });
-            } else {
-                this.signOut();
-            }
-        }, HOUR - (MINUTE * 2));
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            this.timer = setTimeout(() => {
+                if (confirm('Your session is about to expire. Do you want to continue your work?')) {
+                    this.refreshToken()
+                        .subscribe((res: SqlResponse) => {
+                            this.handleAuthentication(res.data[0]);
+                        });
+                } else {
+                    this.signOut();
+                }
+            }, HOUR - (MINUTE * 2));
+        } else {
+            this.signOut();
+        }
+
+
     }
 
     signUp(username: string, password: string, profile: Profile) {
@@ -96,9 +106,10 @@ export class AuthService implements OnDestroy {
     }
 
     signOut() {
+        localStorage.clear();
+        console.log('Signing Out');
         this.user.next(null);
         clearTimeout(this.timer);
-        localStorage.clear();
         this.router.navigate(['/home']);
     }
 
@@ -109,19 +120,26 @@ export class AuthService implements OnDestroy {
                 map((user: User) => {
                     if (!!user) {
                         return user.token;
+                    } else {
+                        return null;
                     }
                 }),
                 exhaustMap((token: string) => {
-                    const request: SqlRequest = {
-                        queryType: 'signIn',
-                        tableName: 'users',
-                        params: {
-                            andWhere: { token }
-                        }
-                    };
-                    return this.http
-                        .post(environment.serverUrl, request)
-                        .pipe(takeUntil(this.destroy$));
+                    if (!!token) {
+                        const request: SqlRequest = {
+                            queryType: 'signIn',
+                            tableName: 'users',
+                            params: {
+                                andWhere: { token }
+                            }
+                        };
+                        return this.http
+                            .post(environment.serverUrl, request)
+                            .pipe(takeUntil(this.destroy$));
+
+                    } else {
+                        return EMPTY;
+                    }
                 }));
     }
 

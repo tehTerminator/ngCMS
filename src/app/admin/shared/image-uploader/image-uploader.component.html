@@ -1,0 +1,26 @@
+<div class="ui segment">
+    <input type="file" #imageField (change)="onImageSelected()" hidden>
+    <button type="button" class="ui labeled icon blue button mb-2" (click)="onSelectImage()">
+        <i class="plus icon"></i>
+        Select Image
+    </button>
+    <div class="ui four doubling cards">
+        <div class="ui card" *ngFor="let img of imageData;let i = index">
+            <img class="fluid image" [src]="img.data" style="max-height: 100px;">
+            <hr>
+            <div class="ui two icon buttons">
+                <button type="button" class="ui basic green button" *ngIf="!img.uploaded" (click)="onUploadImage(i)">
+                    <i class="cloud icon"></i>
+                </button>
+                <button type="button" class="ui basic blue button" *ngIf="img.uploaded" (click)="onInsertImage(i)">
+                    <i class="up arrow icon"></i>
+                </button>
+                <button type="button" class="ui basic red button" (click)="onDeleteImage(i)">
+                    <i class="trash icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <p>Image Uploader Works</p> -->

@@ -1,14 +1,22 @@
-<div class="ui two column grid">
-    <div class="four wide column">
-        <div class="ui vertical menu">
-            <a routerLink="page" routerLinkActive="active" class="item">Page</a>
-            <a routerLink="post" routerLinkActive="active" class="item">Post</a>
-            <a routerLink="menu" routerLinkActive="active" class="item">Menu</a>
-            <!-- <a routerLink="comments" routerLinkActive="active" class="item">Comments</a> -->
+<div class="ui basic segment">
+    <div class="ui two column page grid">
+        <div class="four wide column">
+            <div class="ui fluid vertical right pointing menu">
+                <div class="item">
+                    Page
+                    <div class="menu">
+                        <a [routerLink]="['page', 'list']" routerLinkActive="active" class="item">List All</a>
+                        <a [routerLink]="['page', 'new']" routerLinkActive="active" class="item">Create New</a>
+                    </div>
+                </div>
+                <a routerLink="post" routerLinkActive="active" class="item">Post</a>
+                <a routerLink="menu" routerLinkActive="active" class="item">Menu</a>
+                <!-- <a routerLink="comments" routerLinkActive="active" class="item">Comments</a> -->
+            </div>
         </div>
-    </div>
 
-    <div class="twelve wide column">
-        <router-outlet></router-outlet>
+        <div class="twelve wide column">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

@@ -1,2 +1,15 @@
+<div class="loader" [hidden]="!isLoading">
+    <div class="ui panel center aligned basic segment p-6 mt-4">
+        <div class="ui icon header">
+            <i class="huge spinner loading icon"></i>
+            <div class="content">
+                Loading
+                <div class="sub header">
+                    Please Wait...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <app-nav-bar></app-nav-bar>
 <router-outlet></router-outlet>

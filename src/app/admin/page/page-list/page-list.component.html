@@ -1,0 +1,31 @@
+<div class="ui segment">
+    <button class="ui labeled icon blue button pull-right">
+        <i class="plus icon"></i>
+        Create New
+    </button>
+    <div class="ui header p-0 mb-1">
+        <i class="file alternate icon"></i>
+        <div class="content">
+            <div class="header">
+                Pages
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+
+
+    <div class="ui divided selectable list">
+        <a class="item" *ngFor="let page of pages">
+            <div class="content">
+                <div class="header">
+                    {{ page.title }}
+                </div>
+                <div class="description">
+                    slug: /{{ page.slug }}
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

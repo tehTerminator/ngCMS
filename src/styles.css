@@ -18,6 +18,14 @@ body {
   border-radius: 0 !important;
 }
 
+.p-0 {
+  padding: 0px !important;
+}
+
+.p-6 {
+  padding: 6em !important;
+}
+
 .m-0 {
   margin: 0px !important;
 }
@@ -30,6 +38,14 @@ body {
   margin-bottom: 2em !important;
 }
 
+.mt-1 {
+  margin-top: 1em !important;
+}
+
+.mt-4 {
+  margin-top: 4em !important;
+}
+
 .border-1 {
   border: 1px SOLID !important;
 }
@@ -40,4 +56,9 @@ body {
 
 .ng-invalid.ng-touched {
   border: 1px solid red !important;
+}
+
+.pull-right {
+  float: right !important;
+  clear: none;
 }

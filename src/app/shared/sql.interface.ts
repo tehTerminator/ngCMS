@@ -1,5 +1,3 @@
-import { Post, Page, Category } from './collections';
-import { User } from '../auth/user.model';
 
 export interface SqlRequest {
     queryType: string;
@@ -27,12 +25,3 @@ export interface SqlResponse {
     token: string;
     lastInsertId: number;
 }
-
-/*
-
-'status' => $this->status,
-            'errors' => $this->errors,
-            'data' => $this->data,
-            'message' => $this->message,
-            'token' => $this->token
-            */

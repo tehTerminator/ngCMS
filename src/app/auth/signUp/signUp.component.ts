@@ -2,12 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2 } fr
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
-import { SqlRequest, SqlResponse } from '../../shared/sql.interface';
+import { SqlRequest, SqlResponse } from '../../shared/sql.service';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { User, Profile } from '../user.model';
 import { Captcha } from './../../shared/captcha.validator';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-sign-up',
@@ -83,7 +84,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     }
 
     onImageSelected() {
-        console.log(this.imageField.nativeElement);
         const file = this.imageField.nativeElement.files[0];
         const reader = new FileReader();
 
@@ -92,17 +92,6 @@ export class SignUpComponent implements OnInit, AfterViewInit {
             this.imageData = b64.toString();
         };
         reader.readAsDataURL(file);
-    }
-
-    onUpload() {
-        this.http.post(environment.imageUpload, { imageData: this.imageData })
-            .subscribe((res: any) => {
-                if (res.imageUrl !== undefined) {
-                    this.signUpForm.patchValue({
-                        imageUrl: res.imageUrl
-                    });
-                }
-            });
     }
 
     onSubmit() {
@@ -115,14 +104,27 @@ export class SignUpComponent implements OnInit, AfterViewInit {
             bio: this.signUpForm.get('bio').value,
             imageUrl: this.signUpForm.get('imageUrl').value
         };
-        this.authService.signUp(this.username.value, this.password.value, profile)
-            .subscribe((res: SqlResponse) => {
-                this.isLoading = false;
-                if (res.status) {
-                    alert('User Inserted Successfully. Please Login');
-                    this.router.navigate(['/auth', 'signIn']);
+
+        this.http
+            .post(environment.imageUpload,
+                { imageData: this.imageData, queryType: 'profile' })
+            .subscribe((res: any) => {
+                if (res.imageUrl !== undefined) {
+                    this.signUpForm.patchValue({
+                        imageUrl: res.imageUrl
+                    });
                 }
+                this.authService
+                    .signUp(this.username.value, this.password.value, profile)
+                    .subscribe((res2: SqlResponse) => {
+                        this.isLoading = false;
+                        if (res2.status) {
+                            alert('User Inserted Successfully. Please Login');
+                            this.router.navigate(['/auth', 'signIn']);
+                        }
+                    });
             });
+
     }
 
     errorMessages(errors: { [key: string]: true }, fieldLabel: string) {

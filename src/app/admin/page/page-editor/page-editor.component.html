@@ -1,0 +1,35 @@
+<form class="ui form segment" [formGroup]="pageEditor" (ngSubmit)="onSubmit()">
+    <div class="ui header">
+        Create New Page
+    </div>
+    <hr>
+
+    <div class="field">
+        <label for="title">Title</label>
+        <input type="text" name="title" formControlName="title">
+    </div>
+
+    <div class="field">
+        <label for="body">Body</label>
+        <ckeditor [editor]="myEditor" [formControl]="body" [config]="{ removePlugins: ['MediaEmbed'], mediaEmbed: {} }">
+        </ckeditor>
+    </div>
+
+    <app-image-uploader [destinationControl]="body"></app-image-uploader>
+
+    <div class="field mt-1">
+        <label for="slug">Slug</label>
+        <input type="text" name="slug" formControlName="slug">
+        <div class="ui basic red pointing prompt label" *ngIf="slug.errors && slug.touched">
+            <span *ngIf="slug.errors.slugExists">Slug Not Available. Please Choose Another.</span>
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="author_id">Author Id</label>
+        <input type="text" name="author_id" formControlName="author_id">
+    </div>
+
+    <button type="submit" class="ui green submit button">Submit</button>
+
+</form>
